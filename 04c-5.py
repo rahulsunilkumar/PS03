@@ -41,7 +41,7 @@ def expected_cost(N, mu, sigma):
     expected_excess = (mu - capacity) * (1 - norm.cdf(Z)) + sigma * norm.pdf(Z)  # Compute the expected leftover demand (actually a rectified Gaussian integral).
     expected_excess = max(0, expected_excess)                                    # Ensure numerical stability: expected excess should not be negative.
   
-    return 2500 * N + 0.10 * expected_excess                                     # Total expected cost: fixed truck cost + expected outsourcing cost
+    return 2500 * N + 0.10 * expected_excess                                     # Total expected cost: fixed truck cost + expected outsourcing cost.
 
 # Lists to store optimal results for each sort center
 optimal_trucks = []
@@ -49,8 +49,8 @@ best_costs = []
 
 # Solve for each sort center independently
 for index, row in df.iterrows():
-    mu = row["mean_lbs"]   # Mean demand in pounds.
-    sigma = row["stdev_lbs"]  # Standard deviation of demand (lbs).
+    mu = row["mean_lbs"]                                                         # Mean demand in pounds.
+    sigma = row["stdev_lbs"]                                                     # Standard deviation of demand (lbs).
 
     # Determine the search range for optimal truck allocation
     # Upper bound: We assume demand is covered up to (mu + 3σ), plus a buffer
@@ -84,9 +84,9 @@ print(df[["Sort center #", "Optimal Trucks", "Expected Daily Cost"]])
 
 # ================= QUESTION 5 Part =================
 
-total_expected_cost = df["Expected Daily Cost"].sum()                            # Compute total expected daily cost of operating the branch
-total_fixed_costs = (df["Optimal Trucks"] * 2500).sum()                          # Compute fixed costs (trucks * 2500 per truck)
-total_excess_costs = total_expected_cost - total_fixed_costs                     # Compute excess (outsourced) costs as the difference
+total_expected_cost = df["Expected Daily Cost"].sum()                            # Compute total expected daily cost of operating the branch.
+total_fixed_costs = (df["Optimal Trucks"] * 2500).sum()                          # Compute fixed costs (trucks * 2500 per truck).
+total_excess_costs = total_expected_cost - total_fixed_costs                     # Compute excess (outsourced) costs as the difference.
 
 # Print final results
 print("\n===== Freight Delivery Branch Cost Summary =====")
