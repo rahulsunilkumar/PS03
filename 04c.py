@@ -71,7 +71,7 @@ for index, row in df.iterrows():
     print(f"  Mean demand: {mu:,.0f} lbs")
     print(f"  Std dev: {sigma:,.0f} lbs")
     print(f"  Range searched: N in [0..{max_trucks}]")
-    print(f"  Optimal trucks: {best_N}")
+    print(f"  Optimal trucks: {best_N}")   
     print(f"  Expected daily cost: ${best_C:,.2f}\n")
 
 # Store results in a DataFrame.
@@ -82,12 +82,17 @@ df["Expected Daily Cost"] = best_costs
 print("\nFinal Results:")
 print(df[["Sort center #", "Optimal Trucks", "Expected Daily Cost"]])
 
-# Visualization of Optimal Truck Allocations.
-plt.figure(figsize=(12, 6))
-plt.bar(df["Sort center #"], df["Optimal Trucks"], color='blue', alpha=0.7)
-plt.xlabel("Sort Center")
-plt.ylabel("Optimal Number of Trucks")
-plt.title("Optimal Truck Allocation Across Sort Centers")
-plt.xticks(df["Sort center #"], rotation=0)
-plt.grid(axis="y", linestyle="--", alpha=0.7)
-plt.show()
+# ================= QUESTION 5 Part =================
+
+total_expected_cost = df["Expected Daily Cost"].sum()                            # Compute total expected daily cost of operating the branch
+total_fixed_costs = (df["Optimal Trucks"] * 2500).sum()                          # Compute fixed costs (trucks * 2500 per truck)
+total_excess_costs = total_expected_cost - total_fixed_costs                     # Compute excess (outsourced) costs as the difference
+
+# Print final results
+print("\n===== Freight Delivery Branch Cost Summary =====")
+print(f"Total Expected Daily Cost: ${total_expected_cost:,.2f}")
+
+# Print detailed breakdown
+print("\n=== Cost Breakdown ===")
+print(f"Fixed Costs (Trucks): ${total_fixed_costs:,.2f} ({(total_fixed_costs/total_expected_cost):.1%} of total)")
+print(f"Excess Delivery Costs: ${total_excess_costs:,.2f} ({(total_excess_costs/total_expected_cost):.1%} of total)")
